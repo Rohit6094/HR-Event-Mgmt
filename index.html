@@ -139,75 +139,6 @@
         </div>
       </section>
 
-      <section class="section" id="admin">
-        <div class="shell">
-          <div class="section-heading split">
-            <div>
-              <p class="eyebrow">Admin</p>
-              <h2>Configure recipients and trigger a reminder run.</h2>
-            </div>
-            <p class="section-note">Stored on Vercel and protected by secret.</p>
-          </div>
-
-          <div class="admin-panel">
-            <label class="search-box">
-              <span>Admin Secret</span>
-              <input
-                type="password"
-                id="admin-secret"
-                placeholder="Enter admin secret"
-              />
-            </label>
-
-            <label class="search-box">
-              <span>Recipient Emails</span>
-              <textarea
-                id="admin-recipients"
-                rows="5"
-                placeholder="one@example.com, two@example.com"
-              ></textarea>
-            </label>
-
-            <label class="search-box">
-              <span>Email Subject Prefix</span>
-              <input
-                type="text"
-                id="admin-subject-prefix"
-                placeholder="Nepal HR Calendar"
-              />
-            </label>
-
-            <label class="search-box">
-              <span>Reminder Days</span>
-              <input
-                type="text"
-                id="admin-reminder-days"
-                placeholder="7,1"
-              />
-            </label>
-
-            <div class="admin-actions">
-              <button class="btn btn-primary" id="admin-load" type="button">
-                Load Settings
-              </button>
-              <button class="btn btn-primary" id="admin-save" type="button">
-                Save Settings
-              </button>
-              <button class="btn btn-secondary" id="admin-test" type="button">
-                Send Test Now
-              </button>
-              <button class="btn btn-secondary" id="admin-clear" type="button">
-                Clear Secret
-              </button>
-            </div>
-
-            <p class="toolbar-note" id="admin-status">
-              Load the current reminder settings to edit them.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="agenda">
         <div class="shell">
           <div class="section-heading split">
@@ -294,6 +225,6 @@
       </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
   </body>
 </html>

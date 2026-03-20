@@ -1,4 +1,4 @@
-export const EVENTS=[
+const EVENTS=[
 {date:"2025-01-01",name:"New Year's Day",cat:"inclusive",desc:"Global new year observed across workplaces in Nepal with greetings and annual planning.",national:true,intl:false,remind:7,source:"General civic observance"},
 {date:"2025-01-14",name:"Maghe Sankranti",cat:"hindu",desc:"Major Nepali harvest festival associated with sesame sweets, yam, and family rituals.",national:false,intl:false,remind:7,source:"Nepal festival references"},
 {date:"2025-01-29",name:"Sonam Lhosar",cat:"cultural",desc:"Tamang New Year marked with community celebration, dress, music, and cultural recognition.",national:false,intl:false,remind:10,source:"Nepal festival references"},
@@ -91,11 +91,11 @@ export const EVENTS=[
 {date:"2027-04-07",name:"World Health Day 2027",cat:"inclusive",desc:"Major global health awareness day useful for wellness and benefits communication.",national:false,intl:true,remind:7,source:"WHO and global observance calendars"}
 ];
 
-export const REMOVED_EVENT_NAMES=new Set([
+const REMOVED_EVENT_NAMES=new Set([
   "Holi"
 ]);
 
-export const EVENT_PATCHES={
+const EVENT_PATCHES={
   "Maghe Sankranti":{national:true,source:"Timeanddate Nepal holidays 2025"},
   "Sonam Lhosar":{scope:"community",date:"2025-01-30",national:true,source:"Timeanddate Nepal holidays 2025"},
   "Gyalpo Lhosar":{scope:"community",date:"2025-02-28",source:"Timeanddate Nepal holidays 2025"},
@@ -133,7 +133,7 @@ export const EVENT_PATCHES={
   "Maghe Sankranti 2027":{date:"2027-01-15",national:true,source:"MOHA 2083 public holiday notice"}
 };
 
-export const EXTRA_EVENTS=[
+const EXTRA_EVENTS=[
   {date:"2025-03-13",name:"Fagu Purnima 2025",cat:"hindu",desc:"Holi celebration day observed in Nepal's hill and Himalayan districts.",national:false,intl:false,remind:7,source:"Timeanddate Nepal holidays 2025"},
   {date:"2025-03-14",name:"Terai Holi 2025",cat:"hindu",desc:"Second Holi day observed in the Terai region with color, music, and community gatherings.",national:false,intl:false,remind:7,source:"Timeanddate Nepal holidays 2025"},
   {date:"2025-05-12",name:"Ubhauli Parva",cat:"cultural",scope:"community",desc:"Kirant seasonal festival marking renewal, community gathering, and gratitude to nature.",national:false,intl:false,remind:10,source:"MOHA 2082 public holiday notice"},
@@ -190,13 +190,11 @@ export const EXTRA_EVENTS=[
   {date:"2027-04-06",name:"Ghode Jatra 2027",cat:"cultural",scope:"regional",desc:"Kathmandu Valley horse festival and local public holiday with ceremonial processions.",national:false,intl:false,remind:7,source:"MOHA 2083 public holiday notice"}
 ];
 
-export const categoryLabels={national:"National",hindu:"Hindu",buddhist:"Buddhist",cultural:"Cultural",inclusive:"Inclusive"};
-export const scopeLabels={regional:"Regional",community:"Community"};
-export const englishMonthOrder=["January","February","March","April","May","June","July","August","September","October","November","December"];
-export const nepaliMonthOrder=["Baisakh","Jestha","Ashadh","Shrawan","Bhadra","Ashwin","Kartik","Mangsir","Poush","Magh","Falgun","Chaitra"];
-let dom;
-if(typeof document!=="undefined"){
-dom={
+const categoryLabels={national:"National",hindu:"Hindu",buddhist:"Buddhist",cultural:"Cultural",inclusive:"Inclusive"};
+const scopeLabels={regional:"Regional",community:"Community"};
+const englishMonthOrder=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const nepaliMonthOrder=["Baisakh","Jestha","Ashadh","Shrawan","Bhadra","Ashwin","Kartik","Mangsir","Poush","Magh","Falgun","Chaitra"];
+const dom={
 heroStats:document.getElementById("hero-stats"),
 heroNext:document.getElementById("hero-next"),
 heroUpcoming:document.getElementById("hero-upcoming"),
@@ -221,43 +219,34 @@ modalCopy:document.getElementById("modal-copy"),
 modalPrep:document.getElementById("modal-prep"),
 modalUse:document.getElementById("modal-use"),
 modalSource:document.getElementById("modal-source"),
-modalCategory:document.getElementById("modal-category"),
-adminSecret:document.getElementById("admin-secret"),
-adminRecipients:document.getElementById("admin-recipients"),
-adminSubjectPrefix:document.getElementById("admin-subject-prefix"),
-adminReminderDays:document.getElementById("admin-reminder-days"),
-adminLoad:document.getElementById("admin-load"),
-adminSave:document.getElementById("admin-save"),
-adminTest:document.getElementById("admin-test"),
-adminClear:document.getElementById("admin-clear"),
-adminStatus:document.getElementById("admin-status")
+modalCategory:document.getElementById("modal-category")
 };
-}
 
 let activeFilter="all";
 let searchTerm="";
 let activeView="english";
 let englishYear="2025";
 let nepaliYear="2082";
-export function parseDate(dateString){
+function parseDate(dateString){
   const [year,month,day]=dateString.split("-").map(Number);
-  return new Date(Date.UTC(year,month-1,day));
+  return new Date(year,month-1,day);
 }
 
-export function daysUntil(dateString,baseDate=new Date()){
+function daysUntil(dateString){
   const date=parseDate(dateString);
-  const today=new Date(Date.UTC(baseDate.getUTCFullYear(),baseDate.getUTCMonth(),baseDate.getUTCDate()));
+  const today=new Date();
+  today.setHours(0,0,0,0);
   return Math.round((date-today)/86400000);
 }
 
-export function formatDate(dateString,options){
-  return parseDate(dateString).toLocaleDateString("en-US",{timeZone:"UTC",...options});
+function formatDate(dateString,options){
+  return parseDate(dateString).toLocaleDateString("en-US",options);
 }
 
-export function getNepaliMonthInfo(dateString){
+function getNepaliMonthInfo(dateString){
   const date=parseDate(dateString);
-  const month=date.getUTCMonth()+1;
-  const day=date.getUTCDate();
+  const month=date.getMonth()+1;
+  const day=date.getDate();
   let monthName="Chaitra";
   if((month===4&&day>=14)||(month===5&&day<15)) monthName="Baisakh";
   else if((month===5&&day>=15)||(month===6&&day<15)) monthName="Jestha";
@@ -281,7 +270,7 @@ function withMeta(event){
   return {...event,parsedDate,daysAway:daysUntil(event.date),englishMonth:formatDate(event.date,{month:"long",year:"numeric"}),nepaliMonth:getNepaliMonthInfo(event.date)};
 }
 
-export function getAllEvents(){
+function getAllEvents(){
   const patchedEvents=EVENTS
     .filter((event)=>!REMOVED_EVENT_NAMES.has(event.name))
     .map((event)=>({...event,...(EVENT_PATCHES[event.name]||{})}));
@@ -304,24 +293,24 @@ function getYearFilteredEvents(events,mode){
   return events.filter((event)=>event.nepaliMonth.year===Number(nepaliYear));
 }
 
-export function getUpcomingEvents(limit){
+function getUpcomingEvents(limit){
   return getAllEvents().filter((event)=>event.daysAway>=0).sort((a,b)=>a.daysAway-b.daysAway).slice(0,limit);
 }
 
-export function getCountdownText(daysAway){
+function getCountdownText(daysAway){
   if(daysAway<0) return "Archived";
   if(daysAway===0) return "Today";
   if(daysAway===1) return "1 day";
   return `${daysAway} days`;
 }
 
-export function getPlanningText(event){
+function getPlanningText(event){
   if(event.daysAway<0) return "This event has already passed. Keep it archived for next-cycle planning and review.";
   if(event.daysAway===0) return "This event is active today. Publish greetings, internal banners, and social posts immediately.";
   return `${event.daysAway} days remain. Start approvals and creative production at least ${event.remind} days before the event.`;
 }
 
-export function getUsageText(event){
+function getUsageText(event){
   if(event.intl) return "Use this for DEI, wellbeing, CSR, awareness, or employer-brand storytelling tied to international observances.";
   if(event.national) return "Use this for organization-wide greetings, public holiday notices, leadership communication, and broad employee engagement.";
   if(event.scope==="regional") return "Use this for region-specific planning, branch communications, and locally relevant employee engagement.";
@@ -443,90 +432,6 @@ function closeModal(){
   dom.modalShell.setAttribute("aria-hidden","true");
 }
 
-function getAdminSecret(){
-  return sessionStorage.getItem("admin-secret")||"";
-}
-
-function setAdminStatus(message,isError=false){
-  if(!dom.adminStatus) return;
-  dom.adminStatus.textContent=message;
-  dom.adminStatus.style.color=isError?"#9f2f2f":"";
-}
-
-async function adminRequest(path,options={}){
-  const secret=dom.adminSecret?.value.trim()||getAdminSecret();
-  if(!secret){
-    throw new Error("Enter the admin secret first.");
-  }
-
-  sessionStorage.setItem("admin-secret",secret);
-  dom.adminSecret.value=secret;
-
-  const response=await fetch(path,{
-    ...options,
-    headers:{
-      Authorization:`Bearer ${secret}`,
-      ...(options.body?{"Content-Type":"application/json"}:{}),
-      ...(options.headers||{})
-    }
-  });
-
-  const payload=await response.json().catch(()=>({}));
-  if(!response.ok){
-    throw new Error(payload.error||`Request failed with ${response.status}`);
-  }
-
-  return payload;
-}
-
-function populateAdminForm(settings){
-  if(!settings||!dom.adminRecipients) return;
-  dom.adminRecipients.value=(settings.recipients||[]).join(", ");
-  dom.adminSubjectPrefix.value=settings.subjectPrefix||"Nepal HR Calendar";
-  dom.adminReminderDays.value=(settings.reminderDays||[7,1]).join(",");
-}
-
-async function loadAdminSettings(){
-  setAdminStatus("Loading settings...");
-  try{
-    const payload=await adminRequest("/api/admin/settings",{method:"GET"});
-    populateAdminForm(payload.settings);
-    setAdminStatus(`Settings loaded from ${payload.source}.`);
-  }catch(error){
-    setAdminStatus(error.message,true);
-  }
-}
-
-async function saveAdminSettings(){
-  setAdminStatus("Saving settings...");
-  try{
-    const recipients=dom.adminRecipients.value;
-    const subjectPrefix=dom.adminSubjectPrefix.value;
-    const reminderDays=dom.adminReminderDays.value.split(",").map((value)=>value.trim()).filter(Boolean).map(Number);
-    await adminRequest("/api/admin/settings",{
-      method:"POST",
-      body:JSON.stringify({recipients,subjectPrefix,reminderDays})
-    });
-    setAdminStatus("Settings saved.");
-  }catch(error){
-    setAdminStatus(error.message,true);
-  }
-}
-
-async function sendReminderTest(){
-  setAdminStatus("Sending reminder run...");
-  try{
-    const payload=await adminRequest("/api/reminders",{method:"GET"});
-    if(payload.sent){
-      setAdminStatus(`Sent ${payload.events.length} reminder item(s) using ${payload.configSource} settings.`);
-      return;
-    }
-    setAdminStatus(payload.reason||"No reminders were sent.");
-  }catch(error){
-    setAdminStatus(error.message,true);
-  }
-}
-
 function renderYearSwitch(){
   const allEvents=getAllEvents();
   const years=(activeView==="english"
@@ -588,22 +493,6 @@ function attachEvents(){
   dom.modalClose.addEventListener("click",closeModal);
   dom.modalBackdrop.addEventListener("click",closeModal);
   document.addEventListener("keydown",(event)=>{if(event.key==="Escape") closeModal();});
-
-  if(dom.adminSecret){
-    const storedSecret=getAdminSecret();
-    if(storedSecret){
-      dom.adminSecret.value=storedSecret;
-    }
-
-    dom.adminLoad.addEventListener("click",loadAdminSettings);
-    dom.adminSave.addEventListener("click",saveAdminSettings);
-    dom.adminTest.addEventListener("click",sendReminderTest);
-    dom.adminClear.addEventListener("click",()=>{
-      sessionStorage.removeItem("admin-secret");
-      dom.adminSecret.value="";
-      setAdminStatus("Admin secret cleared.");
-    });
-  }
 }
 
 function init(){
@@ -616,6 +505,4 @@ function init(){
   setView("english");
 }
 
-if(typeof document!=="undefined"){
-  init();
-}
+init();

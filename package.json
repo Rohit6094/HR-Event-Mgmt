@@ -1,8 +1,4 @@
 {
-  "name": "hr-event-mgmt",
-  "private": true,
-  "type": "module",
-  "dependencies": {
-    "@vercel/blob": "^2.3.0"
-  }
+  "name": "hr-event-mgmt-static",
+  "private": true
 }
